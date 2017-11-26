@@ -71,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         callPlaceDetectionApi();
         try {
             mFusedLocationClient.getLastLocation()
@@ -81,7 +82,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mLocation = task.getResult();
                                 // Add a marker in Current Location and move the camera
                                 LatLng clocation = new LatLng(mLocation.getLatitude(),mLocation.getLongitude());
-                                mMap.addMarker(new MarkerOptions().position(clocation).title("Your Location"));
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(clocation));
                             } else {
                                 Log.w("ezHome", "Failed to get location.");
@@ -143,6 +143,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         }
+
         callPlaceDetectionApi();
     }
 
@@ -160,6 +161,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             return;
         }
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(null);
 
         placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
